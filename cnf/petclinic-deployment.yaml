@@ -48,4 +48,4 @@ spec:
             name: management          
         
         #imagePullSecrets:
-        #- name: acr-auth
+        #- name: registry-auth

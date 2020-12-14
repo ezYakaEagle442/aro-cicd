@@ -70,14 +70,18 @@ oc get route vote-ui --template='http://{{.spec.host}}'
 
 ```sh
 
-oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/cnf/05_pipeline_java8.yaml
+# https://github.com/openshift/tektoncd-pipeline-operator/blob/master/deploy/resources/addons/02-clustertasks/s2i-java-8-pr/s2i-java-8-pr-task.yaml
+oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/05_pipeline_java8.yaml
 
 tkn pipeline start build-and-deploy-java-8 \
     -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
     -p deployment-name=petclinic \
     -p git-url=$git_url_springboot \
     -p git-revision=main \
+    -p manifest_dir=k8S \
     -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/petclinic
+
+tkn clustertask describe s2i-java-8
 
 tkn pipeline list
 tkn pipelinerun ls
