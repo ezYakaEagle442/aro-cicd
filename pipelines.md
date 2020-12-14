@@ -1,18 +1,27 @@
 # Tekton Pipelines
 
+- [Tekton overview](https://tekton.dev/docs/overview)
+- [TektonCD Pipelines](https://github.com/tektoncd/pipeline/blob/master/docs/pipelines.md)
+- [Guide to PenShift pipelines](https://www.openshift.com/blog/guide-to-openshift-pipelines-part-2-using-source-2-image-build-in-tekton)
+
 ## pre-req
-Check [tkn cli is installed](./tools.md)
+Check [tkn cli is installed](./tools.md#how-to-install-tekton-cli)
 
 ```sh
 tkn help
 tkn version
 ```
 
-## XXX
+## Create a dummy pipeline
 
 ```sh
 projectname=pipelines-tutorial #3scale-test
 oc new-project $projectname
+
+oc config current-context
+oc status
+oc projects
+oc project $projectname
 
 oc get serviceaccount pipeline
 oc describe sa pipeline
@@ -22,13 +31,6 @@ oc adm policy add-scc-to-user privileged -z pipeline # system:serviceaccount:3sc
 
 oc adm policy add-role-to-user edit -z pipeline
 oc describe scc privileged
-
-oc config current-context
-oc status
-oc projects
-
-
-oc project $projectname
 
 oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/01_apply_manifest_task.yaml
 oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/02_update_deployment_task.yaml
@@ -61,5 +63,24 @@ tkn pipeline start build-and-deploy --last
 
 #  get the route of the application by executing the following command and access the application
 oc get route vote-ui --template='http://{{.spec.host}}'
+
+```
+
+## Create a Pipeline for a SpringBootApp
+
+```sh
+
+oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/cnf/05_pipeline_java8.yaml
+
+tkn pipeline start build-and-deploy-java-8 \
+    -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
+    -p deployment-name=petclinic \
+    -p git-url=$git_url_springboot \
+    -p git-revision=main \
+    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/petclinic
+
+tkn pipeline list
+tkn pipelinerun ls
+tkn pipeline logs -f
 
 ```
