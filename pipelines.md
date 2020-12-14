@@ -1,0 +1,65 @@
+# Tekton Pipelines
+
+## pre-req
+Check [tkn cli is installed](./tools.md)
+
+```sh
+tkn help
+tkn version
+```
+
+## XXX
+
+```sh
+projectname=pipelines-tutorial #3scale-test
+oc new-project $projectname
+
+oc get serviceaccount pipeline
+oc describe sa pipeline
+
+oc adm policy add-scc-to-user privileged -z pipeline # system:serviceaccount:3scale-test:pipeline
+# oc policy add-role-to-user registry-editor -z pipeline
+
+oc adm policy add-role-to-user edit -z pipeline
+oc describe scc privileged
+
+oc config current-context
+oc status
+oc projects
+
+
+oc project $projectname
+
+oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/01_apply_manifest_task.yaml
+oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/02_update_deployment_task.yaml
+oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml
+tkn task ls
+
+oc apply -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/04_pipeline.yaml
+tkn pipeline list
+
+# Lets start a pipeline to build and deploy backend application using tkn:
+tkn pipeline start build-and-deploy \
+    -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
+    -p deployment-name=vote-api \
+    -p git-url=https://github.com/openshift-pipelines/vote-api.git \
+    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/vote-api
+
+# Similarly, start a pipeline to build and deploy frontend application:
+tkn pipeline start build-and-deploy \
+    -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
+    -p deployment-name=vote-ui \
+    -p git-url=https://github.com/openshift-pipelines/vote-ui.git \
+    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/vote-ui
+
+tkn pipeline list
+tkn pipelinerun ls
+tkn pipeline logs -f
+
+# to re-run the pipeline again, use the following short-hand command to rerun the last pipelinerun again that uses the same workspaces, params and sa used in the previous pipeline run:
+tkn pipeline start build-and-deploy --last
+
+#  get the route of the application by executing the following command and access the application
+oc get route vote-ui --template='http://{{.spec.host}}'
+
+```
