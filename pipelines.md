@@ -33,6 +33,17 @@ oc adm policy add-scc-to-user privileged -z pipeline # system:serviceaccount:3sc
 oc adm policy add-role-to-user edit -z pipeline
 oc describe scc privileged
 
+for tkncrd in $(oc get crds -l app.kubernetes.io/part-of=tekton-pipelines -o=custom-columns=:.metadata.name)
+do
+  if [[ "$tkncrd"="*.tekton.dev.*" ]]
+    then
+      echo "Verifying CRD $tkncrd"
+      oc describe crd $tkncrd | grep -i "Short Names"
+  fi
+done
+
+
+
 oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/01_apply_manifest_task.yaml
 oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/02_update_deployment_task.yaml
 oc create -f https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml
@@ -81,6 +92,10 @@ tkn pipeline describe build-and-deploy-java-8
 # tkn clustertask describe s2i-java-8
 # tkn clustertask describe maven
 
+oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/06_maven_pvc.yaml
+oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/07_maven_config_map.yaml
+oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/08_java_pipeline_run.yaml
+
 tkn pipeline start build-and-deploy-java-8 \
     -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
     -p deployment-name=spring-boot-hello-demo \
@@ -90,7 +105,17 @@ tkn pipeline start build-and-deploy-java-8 \
     -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/spring-boot-hello-demo
 
 tkn pipeline list
-tkn pipelinerun ls
+tkn pr ls # tkn pipelinerun ls
+tkn tr ls
 tkn pipeline logs -f
+
+# tkn tr describe build-and-deploy-java-8-run-6whb8-java-format-jz7nd
+Status
+STARTED          DURATION    STATUS
+26 minutes ago   ---         Failed(TaskRunValidationFailed)
+Message
+bound workspaces did not match declared workspaces: didn't provide required values: [maven-settings]
+
+# https://vincent.demeester.fr/articles/tekton-pipeline-without-pipeline-resources.html
 
 ```

@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: run-java8-
+spec:
+  pipelineRef:
+    name: build-and-deploy-java-8
+  workspaces:
+  - name: maven-settings
+    configMap:
+      name: custom-maven-settings
+      items:
+      - key: settings.xml
+        path: settings.xml
+  - name: local-maven-repo
+    persistentVolumeClaim:
+      claimName: maven-repo-pvc
+  - name: shared-workspace
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteMany
+        resources:
+          requests:
+            storage: 500Mi
