@@ -79,12 +79,13 @@ Fork it on GitHub and then define it [set-var.md](./set-var.md) with git_url="ht
 oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/05_pipeline_java8.yaml
 
 # tkn clustertask describe s2i-java-8
+# tkn clustertask describe maven
 
 tkn pipeline start build-and-deploy-java-8 \
     -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
     -p deployment-name=petclinic \
     -p git-url=$git_url \
-    -p git-revision=main \
+    -p git-revision=master \
     -p manifest_dir=k8S-app \
     -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/petclinic
 
