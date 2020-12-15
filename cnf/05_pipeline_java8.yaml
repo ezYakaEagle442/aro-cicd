@@ -46,7 +46,8 @@ spec:
       kind: ClusterTask
     params:
     - name: GOALS
-      value: spring-javaformat:apply
+      value: 
+        - 'spring-javaformat:apply' # see sample at https://redhat-scholars.github.io/tekton-tutorial/tekton-tutorial/openshift/openshift_pipelines.html#ocp-create-java-ksvc-pipeline-tpl
     workspaces:
     - name: source
       workspace: shared-workspace
