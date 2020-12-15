@@ -7,7 +7,7 @@ spec:
   - name: shared-workspace
   - name: local-maven-repo
   - name: maven-settings
-    optional: true  
+    # optional: true  # https://github.com/tektoncd/pipeline/blob/master/docs/workspaces.md#optional-workspaces
   params:
   - name: deployment-name
     type: string
@@ -58,7 +58,7 @@ spec:
     - name: maven-repo
       workspace: local-maven-repo
     - name: maven-settings
-      workspace: maven-settings      
+      workspace: maven-settings
     runAfter:
     - fetch-repository
   - name: build-image
