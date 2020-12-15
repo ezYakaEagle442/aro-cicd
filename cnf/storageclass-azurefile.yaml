@@ -11,7 +11,8 @@ mountOptions:
   - mfsymlinks
   - cache=strict
   - actimeo=30
+# the minimum size of azure premium file is 100GB,
 parameters:
-  skuName: Premium_LRS  # available values: Standard_LRS, Standard_GRS, Standard_ZRS, Standard_RAGRS, Premium_LRS
+  skuName: Standard_LRS  # available values: Standard_LRS, Standard_GRS, Standard_ZRS, Standard_RAGRS, Premium_LRS
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
