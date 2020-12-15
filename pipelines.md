@@ -83,11 +83,11 @@ oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/0
 
 tkn pipeline start build-and-deploy-java-8 \
     -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
-    -p deployment-name=petclinic \
+    -p deployment-name=spring-boot-hello-demo \
     -p git-url=$git_url \
     -p git-revision=master \
     -p manifest-dir=k8S-app \
-    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/java-demo-app
+    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/spring-boot-hello-demo
 
 tkn pipeline list
 tkn pipelinerun ls

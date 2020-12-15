@@ -77,7 +77,7 @@ spec:
     - name: source
       workspace: shared-workspace
     runAfter:
-    - fetch-repository
+    - build-image
   - name: update-deployment
     taskRef:
       name: update-deployment
