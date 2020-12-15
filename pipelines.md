@@ -77,7 +77,7 @@ ex: git_url=https://github.com/ezYakaEagle442/gs-spring-boot-spock
 
 # https://github.com/openshift/tektoncd-pipeline-operator/blob/master/deploy/resources/addons/02-clustertasks/s2i-java-8-pr/s2i-java-8-pr-task.yaml
 oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/05_pipeline_java8.yaml
-
+tkn pipeline describe build-and-deploy-java-8
 # tkn clustertask describe s2i-java-8
 # tkn clustertask describe maven
 
