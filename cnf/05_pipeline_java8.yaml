@@ -16,7 +16,7 @@ spec:
     type: string
     description: revision to be used from repo of the code for deployment
     default: "master"
-  - name: manifest_dir
+  - name: manifest-dir
     type: string
     description: The directory in source that contains yaml manifests - used in 01_apply_manifest_task.yaml
     default: "k8s"
@@ -66,10 +66,13 @@ spec:
     - name: source
       workspace: shared-workspace
     runAfter:
-    - java-format    
+    - fetch-repository # java-format    
   - name: apply-manifests
     taskRef:
       name: apply-manifests
+    params:
+    - name: manifest_dir
+      value: $(params.git-manifest-dir)      
     workspaces:
     - name: source
       workspace: shared-workspace
