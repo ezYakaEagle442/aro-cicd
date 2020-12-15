@@ -10,22 +10,15 @@ spec:
   # Note: You must specify all the Parameters that the Pipeline expects. Parameters that have default values specified in Pipeline are not required to be provided by PipelineRun.
   params:
   - name: deployment-name
-    type: string
-    description: name of the deployment to be patched
+    value: spring-boot-hello-demo
   - name: git-url
-    type: string
-    description: url of the git repo for the code of deployment
+    value: https://github.com/ezYakaEagle442/gs-spring-boot-spock
   - name: git-revision
-    type: string
-    description: revision to be used from repo of the code for deployment
-    default: "master"
+    value: master
   - name: manifest-dir
-    type: string
-    description: The directory in source that contains yaml manifests - used in 01_apply_manifest_task.yaml
-    default: "k8s"
+    value: "k8s-app"
   - name: IMAGE
-    type: string
-    description: image to be build from the code    
+    value: image-registry.openshift-image-registry.svc:5000/3scale-test/spring-boot-hello-demo
   workspaces:
   - name: maven-settings
     configMap:
