@@ -71,7 +71,7 @@ oc get route vote-ui --template='http://{{.spec.host}}'
 
 Here you can check git_url_springboot="https://github.com/spring-projects/spring-petclinic.git" defined in [set-var.md](./set-var.md)
 Fork it on GitHub and then define it [set-var.md](./set-var.md) with git_url="https://github.com/your-project/xxx.git"
-
+ex: git_url=https://github.com/ezYakaEagle442/gs-spring-boot-spock
 
 ```sh
 
@@ -86,8 +86,8 @@ tkn pipeline start build-and-deploy-java-8 \
     -p deployment-name=petclinic \
     -p git-url=$git_url \
     -p git-revision=master \
-    -p manifest_dir=k8S-app \
-    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/petclinic
+    -p manifest-dir=k8S-app \
+    -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/java-demo-app
 
 tkn pipeline list
 tkn pipelinerun ls

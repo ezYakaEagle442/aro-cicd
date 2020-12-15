@@ -72,7 +72,7 @@ spec:
       name: apply-manifests
     params:
     - name: manifest_dir
-      value: $(params.git-manifest-dir)      
+      value: $(params.manifest-dir)      
     workspaces:
     - name: source
       workspace: shared-workspace

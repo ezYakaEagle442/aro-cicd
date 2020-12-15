@@ -66,6 +66,7 @@ echo "Target namespace:" $target_namespace
 vault_secret="NoSugarNoStar" 
 echo "Vault secret:" $vault_secret 
 
+# https://github.com/openshift/gs-spring-boot-spock
 git_url="https://github.com/your-project/xxx.git"
 echo "Project git repo URL : " $git_url 
 
