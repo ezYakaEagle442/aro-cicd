@@ -40,19 +40,19 @@ spec:
       value: "true"
     - name: revision
       value: $(params.git-revision)
-  - name: java-format
-    taskRef:
-      name: maven
-      kind: ClusterTask
-    params:
-    - name: GOALS
-      value: 
-        - 'spring-javaformat:apply' # see sample at https://redhat-scholars.github.io/tekton-tutorial/tekton-tutorial/openshift/openshift_pipelines.html#ocp-create-java-ksvc-pipeline-tpl
-    workspaces:
-    - name: source
-      workspace: shared-workspace
-    runAfter:
-    - fetch-repository
+#  - name: java-format
+#    taskRef:
+#      name: maven
+#      kind: ClusterTask
+#    params:
+#    - name: GOALS
+#      value: 
+#        - 'spring-javaformat:apply' # see sample at https://redhat-scholars.github.io/tekton-tutorial/tekton-tutorial/openshift/openshift_pipelines.html#ocp-create-java-ksvc-pipeline-tpl
+#    workspaces:
+#    - name: source
+#      workspace: shared-workspace
+#    runAfter:
+#    - fetch-repository
   - name: build-image
     taskRef:
       name: s2i-java-8
@@ -74,7 +74,7 @@ spec:
     - name: source
       workspace: shared-workspace
     runAfter:
-    - build-image
+    - fetch-repository
   - name: update-deployment
     taskRef:
       name: update-deployment
