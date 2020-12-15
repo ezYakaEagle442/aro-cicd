@@ -35,6 +35,6 @@ See also :
    1. Setup [Network](setup-network.md)
 1. Setup [ARO cluster](setup-aro.md)
 1. Setup [HELM](setup-helm.md)
-1. Setup [Build](action.md)
+1. Setup [GitHub Action](action.md)
 1. Setup [Openshift Pipelines](pipelines.md)
 

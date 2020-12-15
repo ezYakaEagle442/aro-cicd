@@ -2,7 +2,8 @@
 
 - [Tekton overview](https://tekton.dev/docs/overview)
 - [TektonCD Pipelines](https://github.com/tektoncd/pipeline/blob/master/docs/pipelines.md)
-- [Guide to PenShift pipelines](https://www.openshift.com/blog/guide-to-openshift-pipelines-part-2-using-source-2-image-build-in-tekton)
+- [Guide to OpenShift pipelines part 2](https://www.openshift.com/blog/guide-to-openshift-pipelines-part-2-using-source-2-image-build-in-tekton)
+- [Guide to OpenShift pipelines part4](https://www.openshift.com/blog/guide-to-openshift-pipelines-part-4-application-deployment-and-pipeline-orchestration-1)
 
 ## pre-req
 Check [tkn cli is installed](./tools.md#how-to-install-tekton-cli)
@@ -68,20 +69,24 @@ oc get route vote-ui --template='http://{{.spec.host}}'
 
 ## Create a Pipeline for a SpringBootApp
 
+Here you can check git_url_springboot="https://github.com/spring-projects/spring-petclinic.git" defined in [set-var.md](./set-var.md)
+Fork it on GitHub and then define it [set-var.md](./set-var.md) with git_url="https://github.com/your-project/xxx.git"
+
+
 ```sh
 
 # https://github.com/openshift/tektoncd-pipeline-operator/blob/master/deploy/resources/addons/02-clustertasks/s2i-java-8-pr/s2i-java-8-pr-task.yaml
 oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/05_pipeline_java8.yaml
 
+# tkn clustertask describe s2i-java-8
+
 tkn pipeline start build-and-deploy-java-8 \
     -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
     -p deployment-name=petclinic \
-    -p git-url=$git_url_springboot \
+    -p git-url=$git_url \
     -p git-revision=main \
-    -p manifest_dir=k8S \
+    -p manifest_dir=k8S-app \
     -p IMAGE=image-registry.openshift-image-registry.svc:5000/$projectname/petclinic
-
-tkn clustertask describe s2i-java-8
 
 tkn pipeline list
 tkn pipelinerun ls
