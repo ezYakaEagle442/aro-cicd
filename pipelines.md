@@ -94,7 +94,7 @@ tkn pipeline describe build-and-deploy-java-8
 
 oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/06_maven_pvc.yaml
 oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/07_maven_config_map.yaml
-oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/08_java_pipeline_run.yaml #https://github.com/tektoncd/pipeline/issues/2170
+oc create -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/08_java_pipeline_run.yaml #https://github.com/tektoncd/pipeline/issues/2170
 
 tkn pipeline start build-and-deploy-java-8 \
     -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/master/01_pipeline/03_persistent_volume_claim.yaml \
