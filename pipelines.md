@@ -13,6 +13,12 @@ tkn help
 tkn version
 ```
 
+Install the Red Hat OpenShift Pipelines Operator based on Tekton from the OperatorHub
+```sh
+echo "Please Install the Red Hat OpenShift Pipelines Operator based on Tekton from the OperatorHub, go to :"
+echo "$aro_console_url/operatorhub/ns/openshift-machine-api?category=Developer+Tools&keyword=Tekton"
+```
+
 ## Create a dummy pipeline
 
 ```sh
@@ -85,6 +91,8 @@ Fork it on GitHub and then define it [set-var.md](./set-var.md) with git_url="ht
 ex: git_url=https://github.com/ezYakaEagle442/gs-spring-boot-spock
 
 ```sh
+
+oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/09_rbac.yaml
 
 oc apply -f https://raw.githubusercontent.com/ezYakaEagle442/aro-cicd/main/cnf/storageclass-azurefile.yaml
 oc get sc
